@@ -1,0 +1,11 @@
+﻿@model Brand
+@{ 
+    ViewData["Title"] = Model.Name;
+}
+
+@await Component.InvokeAsync("Banners")
+<img src="@Model.Logo" alt="@Model.Name" class="p-1" />
+
+<h2>@Model.Name  </h2>
+
+<partial name="ProductList" model="@Model.Products" />

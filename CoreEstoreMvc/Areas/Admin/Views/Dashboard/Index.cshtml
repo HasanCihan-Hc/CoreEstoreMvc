@@ -1,0 +1,157 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+<h2>Hoşgeldiniz...</h2>
+<div class="row row-cols-4">
+    <div class="col-12 col-md-3">
+        <div class="alert alert-info">
+            <div class="d-flex align-items-center">
+                <div class="pr-2">
+                    <i class="fa fa-3x fa-comment-alt"></i>
+                </div>
+                <div class="flex-fill">
+                    <div>Yeni yorumlar</div>
+                    <div class="d-flex align-items-center">
+                        <div class="h1 px-2">@ViewBag.CommentsCount</div>
+                        <div class="h4 px-2">Adet</div>
+                    </div>
+                    <div class="text-right">
+                        <a asp-controller="Products" asp-action="ProductComments" class="text-decoration-none">
+                            Tümü
+                            <i class="fa fa-caret-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-3">
+        <div class="alert alert-warning text-white">
+            <div class="d-flex align-items-center">
+                <div class="pr-2">
+                    <i class="fa fa-3x fa-users"></i>
+                </div>
+                <div class="flex-fill">
+                    <div>Üyeler</div>
+                    <div class="d-flex align-items-center">
+                        <div class="h1 px-2">@ViewBag.UsersCount</div>
+                        <div class="h4 px-2">Adet</div>
+                    </div>
+                    <div class="text-right">
+                        <a asp-controller="Users" asp-action="Index" class="text-decoration-none">
+                            Tümü
+                            <i class="fa fa-caret-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-3">
+        <div class="alert alert-secondary text-white">
+            <div class="d-flex align-items-center">
+                <div class="pr-2">
+                    <i class="fa fa-3x fa-shopping-cart"></i>
+                </div>
+                <div class="flex-fill">
+                    <div>Yeni Siparişler</div>
+                    <div class="d-flex align-items-center">
+                        <div class="h1 px-2">@ViewBag.OrdersCount</div>
+                        <div class="h4 px-2">Adet</div>
+                    </div>
+                    <div class="text-right">
+                        <a asp-controller="Users" asp-action="Index" class="text-decoration-none">
+                            Tümü
+                            <i class="fa fa-caret-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-3">
+        <div class="alert alert-danger text-white">
+            <div class="d-flex align-items-center">
+                <div class="pr-2">
+                    <i class="fa fa-3x fa-gift"></i>
+                </div>
+                <div class="flex-fill">
+                    <div>Ürün Görüntüleme</div>
+                    <div class="d-flex align-items-center">
+                        <div class="h1 px-2">@ViewBag.ReviewsCount</div>
+                        <div class="h4 px-2">Adet</div>
+                    </div>
+                    <div class="text-right">
+                        <a asp-controller="Users" asp-action="Index" class="text-decoration-none">
+                            Tümü
+                            <i class="fa fa-caret-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col col-md-6">
+        
+        <canvas id="monthlySalesChart"></canvas>
+    </div>
+    <div class="col col-md-6">
+        <div class="card card-primary">
+            <div class="card-header">
+                <table class="table table-primary">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>Ürün Adı</th>
+                            <th>Toplam Satış Adedi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var topSellerProduct in ViewBag.TopSellerProducts as IEnumerable<TopSellerProductViewModel>)
+                         {
+                              <tr>
+                           
+                                  <td>
+                                       <img src="@topSellerProduct.Product.Picture" class="img-thumbnail" />
+                                  </td>
+                                  <td>
+                                      @topSellerProduct.Product.Name
+                                  </td>
+                                  <td>
+                                      @topSellerProduct.TotalSales.ToString("n0")
+                                  </td>
+
+                              </tr>
+                         }                       
+                    </tbody>                    
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/lib/Chart.js/chart.min.js"></script>
+    
+    <script>
+        var ctx = document.getElementById("monthlySalesChart").getContext('2d');
+        var monthlySalesChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(ViewBag.MonthlySalesMonths),
+                datasets: [{
+                    label: 'Aylık Toplam Satış',
+                    data: @Html.Raw(ViewBag.MonthlySalesAmounts),
+                    borderColor:'rgba(0,0,255)'
+                }]
+            }
+        })
+
+    </script>
+
+
+
+ } 

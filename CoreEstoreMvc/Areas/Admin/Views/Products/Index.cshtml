@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Product>
+
+@{
+    var name = "Ürün";
+    ViewData["Title"] = $"{name} Yönetimi";
+
+    
+}
+
+<div class="card card-outline card-primary">
+    <div class="card-header">
+        <h3 class="card-title">@name Listesi </h3>
+
+        <div class="card-tools">
+            <a asp-action="Create" class="btn btn-tool">
+                <i class="fas fa-plus"></i> Yeni @name
+            </a>
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+
+        <div class="d-flex justify-content-center">
+            <partial name="PagedListPagerPartial" model="Model as IPagedList" />
+        </div>
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 10%">@Html.DisplayNameFor(p => p.Picture)</th>
+                    <th style="width: 30%">@Html.DisplayNameFor(p => p.Name)</th>
+                    <th style="width: 10%">@Html.DisplayNameFor(p => p.Code)</th>
+                    <th style="width: 10%">@Html.DisplayNameFor(p => p.Price)</th>
+                    <th style="width: 10%">@Html.DisplayNameFor(p => p.Discount)</th>
+                    <th style="width: 10%">@Html.DisplayNameFor(p => p.Reviews)</th>
+                    <th style="width: 10%">@Html.DisplayNameFor(p => p.Brand.Name)</th>
+                    <th style="width: 10%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="@item.Picture" width="80" height="80" />
+                        </td>
+                        <td>@item.Name</td>
+                        <td>@item.Code</td>
+                        <td>@item.Price.ToString("c2")</td>
+                        <td>@item.Discount.ToString()</td>
+                        <td>@item.Reviews.ToString("n0")</td>
+                        <td>@item.Brand.Name</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-link">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-link remove-btn">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-center py-2" >
+            <partial name="PagedListPagerPartial" model="Model as IPagedList" />
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <partial name="_RemoveConfirmation" />
+}

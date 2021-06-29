@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Order>
+@{
+    ViewData["Title"] = "Siparişler";
+}
+
+<div class="card card-primary card-outline">
+    <div class="card-header">
+        <div class="card-title">Sipariş Listesi</div>
+    </div>
+    <div class="card-body">
+        <div class="d-flex justify-content-center py-2">
+            <partial name="PagedListPagerPartial" model="Model as IPagedList" />
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sipariş T.</th>
+                    <th>Üye Adı</th>
+                    <th>Üye E-Posta</th>
+                    <th>Tutar</th>
+                    <th>Detay</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>
+                            @order.Date.ToShortDateString() - @order.Date.ToShortTimeString()
+                        </td>
+                        <td>
+                            @order.User.Name
+                        </td>
+                        <td>
+                            @order.User.UserName
+                        </td>
+                        <td>
+                            @order.GrandTotal.ToString("c2")
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalDetail_@order.Id">
+                                <i class="fa fa-search"></i> İncele
+                            </button>
+                            <form asp-action="UpdateOrder" method="post">
+                                <input type="hidden" name="id" value="@order.Id" />
+                                <div class="modal fade" id="modalDetail_@order.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Sipariş Detayı</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <partial name="OrderDetailsPartial" model="@order.OrderItems" />
+
+                                                <div class="card card-primary card-outline">
+                                                    <div class="card-body">
+                                                        <div class="form-group form-inline">
+                                                            <label>Kargo Takip No:</label>
+                                                            <input type="text" name="shippingNumber" id="shippingNumber" class="form-control" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                                                <button type="submit" class="btn btn-primary">Kaydet</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-center py-2">
+            <partial name="PagedListPagerPartial" model="Model as IPagedList" />
+        </div>
+    </div>
+</div>

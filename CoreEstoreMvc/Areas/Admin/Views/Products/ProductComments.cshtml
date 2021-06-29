@@ -1,0 +1,54 @@
+﻿@model IEnumerable<ProductComment>
+@{
+    var name = "Onay Bekleyen Yorum ";
+}
+<div class="card card-outline card-primary">
+    <div class="card-header">
+        <h3 class="card-title">@name Listesi </h3>
+
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 10%">@Html.DisplayNameFor(p => p.User.Name)</th>
+                    <th style="width: 70%">@Html.DisplayNameFor(p => p.Text)</th>
+                    <th style="width: 10%">@Html.DisplayNameFor(p => p.Date)</th>
+                    <th style="width: 10%">İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                 {
+                    <tr>
+                        <td>
+                            @item.User.Name
+                            <div class="small">
+                                <a href="mailto:@item.User.UserName">@item.User.UserName</a>
+                            </div>
+                        </td>
+                        <td>@item.Text</td>
+                        <td>@item.Date.ToShortDateString()- @item.Date.ToShortTimeString()</td>
+                        <td>
+                            <a asp-action="ApproveComment" asp-route-id="@item.Id" class="btn btn-sm btn-link">
+                                <i class="fas fa-check"></i>
+                            </a>
+                            <a asp-action="DeleteComment" asp-route-id="@item.Id" class="btn btn-sm btn-link remove-btn">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                 }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <partial name="_RemoveConfirmation" />
+}

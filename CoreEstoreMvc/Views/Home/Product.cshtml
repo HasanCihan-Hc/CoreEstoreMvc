@@ -1,0 +1,134 @@
+﻿@model Product
+@inject UserManager<User> userManager
+@{
+    ViewData["Title"] = Model.Name;
+
+    var carousel = Model.ProductPictures.Select(p => p.Picture).ToList();
+    carousel.Insert(0, Model.Picture);
+}
+<div class="p-2 text-secondary">
+    @foreach (var categoryProduct in Model.CategoryProducts)
+    {
+        <div>
+            @categoryProduct.Category.Rayon.Name / <a asp-controller="Home" asp-action="Category" asp-route-id="@categoryProduct.Category.Id">@categoryProduct.Category.Name</a>
+        </div>
+    }
+</div>
+<div class="row mb-2">
+    <div class="col-12 col-md-6">
+        <img id="productPicture" src="@Model.Picture" class="img-thumbnail product-image active mb-2" />
+        <div class="row row-cols-6 justify-content-center">
+            <div class="col-2">
+                <img src="@Model.Picture" class="img-thumbnail thumbnail-image" />
+            </div>
+            @foreach (var productPicture in Model.ProductPictures)
+            {
+                <div class="col-2">
+                    <img src="@productPicture.Picture" class="img-thumbnail thumbnail-image" />
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        @if (Model.ProductComments.Where(p => p.Enabled).Count() > 0)
+        {
+            <div class="h5 text-right">
+                <partial name="Star" model="@(Model.ProductComments.Where(p=>p.Enabled).Sum(p=>p.Score) / (float)Model.ProductComments.Where(p => p.Enabled).Count())"></partial>
+            </div>
+        }
+        <div class="h5">
+            @Model.Name
+        </div>
+        <div class="text-info">
+            <a asp-controller="Home" asp-action="Brand" asp-route-id="@Model.Brand.Id">@Model.Brand.Name</a>
+        </div>
+        <div class="d-flex">
+            @if (Model.Discount == 0)
+            {
+                <div class="h3"><b>@Model.DiscountedPrice.ToString("c2")</b></div>
+            }
+            else
+            {
+                <div class="col-2 bg-danger text-white px-1 py-3 text-center h3">
+                    %@Model.Discount.ToString()
+                </div>
+                <div class="flex-fill p-1">
+                    <div class="small text-secondary" style="text-decoration: line-through">@Model.Price.ToString("c2")</div>
+                    <div class="h3"><b>@Model.DiscountedPrice.ToString("c2")</b></div>
+                </div>
+            }
+
+        </div>
+        @if (Model.Price > 100)
+        {
+            <div class="bg-light p-2">
+                <h2>
+                    <i class="fa fa-truck"></i>
+                    Kargo Bedava
+                </h2>
+            </div>
+        }
+        <partial name="AddToCartButton" model="new AddToCartViewModel { Quantity = 1, ProductId = Model.Id }" />
+        <div class="text-info">
+            <i class="fa fa-fw fa-eye"></i> Görüntülenme : @Model.Reviews.ToString("n0")
+        </div>
+    </div>
+</div>
+<ul class="nav nav-tabs" id="productTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="desc-tab" data-toggle="tab" href="#desc" role="tab">Ürün Açıklamaları</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="comments-tab" data-toggle="tab" href="#comments" role="tab">Yorumlar</a>
+    </li>
+</ul>
+<div class="tab-content mb-2 border-left border-right border-bottom p-2" id="myTabContent">
+    <div class="tab-pane fade show active" id="desc" role="tabpanel">
+        @Html.Raw(Model.Descriptions)
+    </div>
+    <div class="tab-pane fade" id="comments" role="tabpanel">
+        @if (ViewBag.CanAddComment)
+        {
+            <partial name="CommentForm" model="new ProductComment { Score = 0, ProductId = Model.Id }" />
+        }
+        else
+        {
+            <div class="text-danger">Bu ürünü satın almış olan üyelerimiz yorum ekleyebilir...</div>
+        }
+        <hr />
+        @foreach (var productComment in Model.ProductComments.Where(p => p.Enabled || p.UserId == ViewData["userId"] as int?).OrderByDescending(p => p.Date))
+        {
+            <blockquote class="comment-blockquote blockquote p-2">
+                <div class="text-right p-2">
+                    <partial name="Star" model="(float)productComment.Score" />
+                </div>
+                <p class="mb-0">@productComment.Text</p>
+                <footer class="blockquote-footer">@productComment.User.Name - @productComment.Date.ToShortDateString()  @productComment.Date.ToShortTimeString()</footer>
+            </blockquote>
+            <hr />
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(() => {
+            $('.thumbnail-image').click((e) => {
+                $('#productPicture').removeClass('active');
+                $('.thumbnail-image').removeClass('border-primary').css('filter', 'brightness(95%)');
+                $(e.currentTarget).addClass('border-primary').css('filter', 'brightness(100%)');
+                setTimeout(() => {
+                    $('#productPicture').attr('src', $(e.currentTarget).attr('src')).addClass('active');
+                }, 300);
+            });
+            $('.star-group .comment-star').click((e) => {
+                $('#commentScore').val($(e.currentTarget).attr('data-score'));
+                $('.star-group .comment-star').removeClass('fas').addClass('far')
+                for (var i = 0; i < $(e.currentTarget).attr('data-score'); i++) {
+                    $('.star-group .comment-star').eq(i).removeClass('far').addClass('fas');
+                }
+            });
+        });
+    </script>
+}

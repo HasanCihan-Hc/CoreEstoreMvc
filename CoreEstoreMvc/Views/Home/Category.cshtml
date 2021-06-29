@@ -1,0 +1,9 @@
+﻿@model Category
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+@await Component.InvokeAsync("Banners")
+
+<h2>@Model.Name  </h2>
+<partial name="ProductList" model="@Model.CategoryProducts.Select(p=>p.Product)" />

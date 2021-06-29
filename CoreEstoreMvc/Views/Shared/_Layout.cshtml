@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MVCCoreEStore</title>
+    <link href="~/css/adminlte/fontawesome-free/css/all.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body class="bg-light">
+    <header>
+
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav ml-auto">
+                        @await Component.InvokeAsync("UserBar")
+                         @await Component.InvokeAsync("BasketButton")
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MVCCoreEStore</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <form class="my-2 my-lg-0 flex-grow-1" method="get" asp-controller="Home" asp-action="Search">
+                        <div class="input-group">
+                            <input class="form-control" type="search" placeholder="ara..." name="Keywords" />
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-primary" type="submit">Ara</button>
+                            </div>
+                        </div>
+                    </form>
+                    <ul class="navbar-nav">
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+            <div class="container">
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav ml-auto mr-auto">
+                        @await Component.InvokeAsync("CategoryMenu")
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container bg-white border-left border-right shadow">
+        <main role="main" class="py-3">
+            @RenderBody()
+        </main>
+        @await Component.InvokeAsync("BrandsBar")
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2021 - MVCCoreEStore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        $(() => {
+            $('.quantityDecrease').click((e) => {
+                var v = $(e.currentTarget).parent().parent().find('input').val();
+                if (v > 1)
+                    $(e.currentTarget).parent().parent().find('input').val(--v);
+            });
+            $('.quantityIncrease').click((e) => {
+                var v = $(e.currentTarget).parent().parent().find('input').val();
+                if (v < 1000)
+                    $(e.currentTarget).parent().parent().find('input').val(++v);
+            });
+        })
+    </script>
+</body>
+</html>

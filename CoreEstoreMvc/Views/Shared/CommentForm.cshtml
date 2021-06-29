@@ -1,0 +1,18 @@
+﻿@model ProductComment
+<form asp-controller="Home" asp-action="Comment" method="post">
+    <input type="hidden" asp-for="ProductId" />
+    <div class="form-group">
+        <label asp-for="Text"></label>
+        <textarea asp-for="Text" class="form-control"></textarea>
+        <span asp-validation-for="Text"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Score"></label>
+        <input type="hidden" asp-for="Score" id="commentScore" value="" />
+        <div class="star-group">
+            <partial name="Star" model="(float)Model.Score" />
+        </div>
+        <span asp-validation-for="Score"></span>
+    </div>
+    <button type="submit" class="btn btn-primary"><i class="fa fa-comment"></i> Gönder</button>
+</form>

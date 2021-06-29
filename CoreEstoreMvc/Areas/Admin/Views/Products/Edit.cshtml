@@ -1,0 +1,214 @@
+﻿@model Product
+@{
+    var name = "Ürün";
+    ViewData["Title"] = $"{name} Güncelleme";
+}
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Picture" />
+    <input type="hidden" asp-for="Date" />
+    <div class="card card-outline card-success">
+        <div class="card-header">
+            <h3 class="card-title">Genel</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="BrandId"></label>
+                        <select asp-for="BrandId" asp-items="ViewBag.Brands" class="custom-select">
+                            <option value="" disabled="disabled" selected="selected">[Seçiniz]</option>
+                        </select>
+                        <span asp-validation-for="BrandId"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="SelectedCategories"></label>
+                        <select asp-for="SelectedCategories" asp-items="ViewBag.Categories" multiple class="form-control">
+                        </select>
+                        <span asp-validation-for="SelectedCategories"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" type="text" class="form-control" placeholder="@Html.DisplayNameFor(p => p.Name) yazınız... " />
+                        <span asp-validation-for="Name"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="Code"></label>
+                        <input asp-for="Code" type="text" class="form-control" placeholder="@Html.DisplayNameFor(p => p.Code) yazınız... " />
+                        <span asp-validation-for="Code"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label asp-for="PriceText"></label>
+                        <input asp-for="PriceText" type="text" class="form-control" placeholder="@Html.DisplayNameFor(p => p.PriceText) yazınız... " />
+                        <span asp-validation-for="PriceText"></span>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label asp-for="Discount"></label>
+                        <input asp-for="Discount" type="text" class="form-control" placeholder="@Html.DisplayNameFor(p => p.Discount) yazınız... " />
+                        <span asp-validation-for="Discount"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" accept="image/*" id="customCheckEnabled" asp-for="Enabled">
+                            <label class="custom-control-label" for="customCheckEnabled">Aktif</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card-outline card-success collapsed-card">
+        <div class="card-header">
+            <h3 class="card-title">Açıklama</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label asp-for="Descriptions"></label>
+                        <textarea asp-for="Descriptions" rows="8" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card-outline card-success collapsed-card">
+        <div class="card-header">
+            <h3 class="card-title">Görsel</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="PictureFile"></label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" asp-for="PictureFile">
+                            <label class="custom-file-label" for="PictureFile" data-browse="Gözat">Dosya Seçiniz</label>
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <ul class="list-unstyled">
+                            <li>En iyi görünüm için yüklenen görseller 800x800 piksel olmalıdır.</li>
+                            <li>Yüklenen görseller otomatik olarak 800x800 piksele getirilecektir.</li>
+                            <li>Yüklenen görseller otomatik olarak JPEG formatına dönüştürülecektir.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-6 text-center">
+                    <img id="imgPreview" src="@Model.Picture" width="400" height="400" class="border p-2 shadow-sm" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="PictureFiles"></label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" multiple asp-for="PictureFiles">
+                            <label class="custom-file-label" for="PictureFiles" data-browse="Gözat">Dosya(lar) Seçiniz</label>
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <ul class="list-unstyled">
+                            <li>En iyi görünüm için yüklenen görseller 800x800 piksel olmalıdır.</li>
+                            <li>Yüklenen görseller otomatik olarak 800x800 piksele getirilecektir.</li>
+                            <li>Yüklenen görseller otomatik olarak JPEG formatına dönüştürülecektir.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-6 text-center">
+                    <div id="PictureGalleryImagePanel" class="d-flex flex-wrap justify-content-center p-2">
+                        @foreach (var productPicture in Model.ProductPictures)
+                        {
+                            <img id="imgPreview" src="@productPicture.Picture" width="80" height="80" class="border p-2 shadow-sm m-2" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <a class="btn btn-link" asp-action="Index">İptal</a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script>
+        $(() => {
+            $('#SelectedCategories').select2();
+            $('#Descriptions').summernote({
+                height: 480
+            });
+            $('#PictureFile').change(function () {
+                var reader = new FileReader();
+                reader.onloadend = function (ev) {
+                    $('#imgPreview').attr('src', reader.result);
+                };
+                reader.readAsDataURL(this.files[0]);
+            });
+            $('#PictureFiles').change(function () {
+                $('#PictureGalleryImagePanel').html('');
+                for (var i = 0; i < this.files.length; i++) {
+                    var reader = new FileReader();
+                    reader.onloadend = function (ev) {
+                        $('#PictureGalleryImagePanel').append('<img id="imgPreview" src="' + ev.target.result + '" width="80" height="80" class="border p-2 shadow-sm m-2" />')
+                    };
+                    reader.readAsDataURL(this.files[i]);
+                }
+            });
+        })
+    </script>
+}

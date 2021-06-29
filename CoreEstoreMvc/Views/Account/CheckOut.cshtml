@@ -1,0 +1,94 @@
+﻿@model User
+
+@{
+    ViewData["Title"] = "Sepetim";
+}
+
+<div class="card">
+    <div class="card-body">
+        @if (Model.ShoppingCartsItems.Any())
+        {
+            <div class="text-right p-2">
+                <a asp-action="Payment" class="btn btn-success">
+                    <i class="fa fa-shopping-cart"></i>
+                    ÖDEME YAP
+                </a>
+                <a asp-controller="Home" asp-action="ClearShoppingCart" class="btn btn-outline-danger">
+                    Sepeti Boşalt
+                </a>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width: 10%">Görsel</th>
+                        <th>Ürün Adı</th>
+                        <th>Miktar</th>
+                        <th>Fiyat</th>
+                        <th>Tutar</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var shoppingCartItem in Model.ShoppingCartsItems)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@shoppingCartItem.Product.Picture" class="img-thumbnail" />
+                            </td>
+                            <td>
+                                @shoppingCartItem.Product.Name
+                                <div class="small">@shoppingCartItem.Product.Code</div>
+                            </td>
+                            <td>
+                                @shoppingCartItem.Quantity.ToString("n0")
+                            </td>
+                            <td>
+                                @shoppingCartItem.Product.DiscountedPrice.ToString("c2")
+                                <div class="small" style="text-decoration: line-through">@shoppingCartItem.Product.Price.ToString("c2")</div>
+                            </td>
+                            <td>
+                                @shoppingCartItem.Amount.ToString("c2")
+                            </td>
+                            <td>
+                                <a asp-controller="Home" asp-action="RemoveFromCart" asp-route-id="@shoppingCartItem.Id">
+                                    <i class="fa fa-times text-danger"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Toplam</td>
+                        <td class="bg-danger text-white">@Model.ShoppingCartTotal.ToString("c2")</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Genel Toplam</td>
+                        <td class="bg-success text-white">@Model.ShoppingCartGrandTotal.ToString("c2")</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Kazancınız</td>
+                        <td class="bg-light text-secondary">@Model.ShoppingCartsItems</td>
+                        <td></td>
+                    </tr>
+
+                </tfoot>
+            </table>
+        }
+        else
+        {
+            <div class="h4 text-center p-5">Henüz sepetinizde ürün bulunmamaktadır.</div>
+        }
+    </div>
+</div>

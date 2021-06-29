@@ -1,0 +1,42 @@
+﻿@model Product
+<div class="col col-md-3 mb-4">
+    <div class="card">
+        <div class="text-right">
+            <a class="btn btn-sm btn-link" asp-route="Product" asp-route-id="@Model.Id" asp-route-name="@Model.Name.ToSafeUrl()">
+                <i class="fa fa-search"></i>
+            </a>
+        </div>
+        <a class="btn btn-sm btn-link" asp-route="Product" asp-route-id="@Model.Id" asp-route-name="@Model.Name.ToSafeUrl()">
+            <img src="@(Model.Picture ?? "/content/images/no-image.png")" class="card-img-top" alt="@Model.Name">
+        </a>
+        <div class="card-body">
+            <h5 class="card-title product-name">@Model.Name</h5>
+            <div class="d-flex">
+                @if (Model.Discount == 0)
+                {
+                    <div class="flex-fill p-1">
+                        <div><b>@Model.DiscountedPrice.ToString("c2")</b></div>
+                    </div>
+                    <div class="col-4 px-1 py-3 h5">
+                        &nbsp;
+                    </div>
+                }
+                else
+                {
+                    <div class="col-4 bg-danger text-white px-1 py-3 text-center h5">
+                        %@Model.Discount.ToString()
+                    </div>
+                    <div class="flex-fill p-1">
+                        <div class="small text-secondary" style="text-decoration: line-through">@Model.Price.ToString("c2")</div>
+                        <div><b>@Model.DiscountedPrice.ToString("c2")</b></div>
+                    </div>
+                }
+
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            
+            <partial name="AddToCartButton" model="@new AddToCartViewModel { ProductId = Model.Id, Quantity = 1 }" />
+        </div>
+    </div>
+</div>

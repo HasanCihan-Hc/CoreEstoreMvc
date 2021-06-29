@@ -1,0 +1,23 @@
+﻿@model IPagedList
+
+@Html.PagedListPager(
+      Model ,
+      page => Url.Action("Index", new { page }),
+      new X.PagedList.Web.Common.PagedListRenderOptionsBase
+      {
+          ActiveLiElementClass = "active",
+          Display = X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
+          LiElementClasses = new[] { "page-item" },
+          UlElementClasses = new[] { "pagination", "" },
+          MaximumPageNumbersToDisplay = 5,
+          PageClasses = new[] { "page-link" },
+          EllipsesElementClass = "page-link",
+          DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+          DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+          DisplayLinkToNextPage = PagedListDisplayMode.Always,
+          DisplayLinkToLastPage = PagedListDisplayMode.Always,
+          LinkToFirstPageFormat = "<i class=\"fa fa-fast-Backward\"></i>",
+          LinkToPreviousPageFormat = "<i class=\"fa fa-Backward\"></i>",
+          LinkToNextPageFormat = "<i class=\"fa fa-fast-Forward\"></i>",
+          LinkToLastPageFormat = "<i class=\"fa fa-fast-Forward\"></i>"
+      })

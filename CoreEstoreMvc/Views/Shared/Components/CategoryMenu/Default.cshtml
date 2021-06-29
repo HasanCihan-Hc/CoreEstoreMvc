@@ -1,0 +1,20 @@
+﻿@model IEnumerable<Rayon>
+
+
+@foreach (var rayon in Model)
+{
+
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id=" navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @rayon.Name
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+            @foreach (var category in rayon.Categories.Where(p => p.Enabled).OrderBy(p => p.SortOrder))
+            {
+                <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Category" asp-route-id="@category.Id">@category.Name</a>
+
+            }
+        </div>
+    </li>
+}

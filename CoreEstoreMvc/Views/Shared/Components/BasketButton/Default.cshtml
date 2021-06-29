@@ -1,0 +1,11 @@
+﻿@model int
+
+<li class="nav-item">
+    <a asp-controller="Account" asp-action="CheckOut" class="btn btn-outline-secondary">
+        Sepetim
+        <i class="fa fa-shopping-cart"></i>
+        <span class="badge badge-pill badge-success shopping-cart-badge">
+            @Model
+        </span>
+    </a>
+</li>

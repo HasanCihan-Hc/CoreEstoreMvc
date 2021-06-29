@@ -1,0 +1,104 @@
+﻿@model IEnumerable<User>
+@inject UserManager<User> userManager
+@{
+    ViewData["Title"] = "Kullanıcı Listesi";
+}
+
+<div class="card card-primary card-outline">
+    <div class="card-header">
+        <div class="card-title">Kullanıcı Listesi</div>
+    </div>
+    <div class="card-body">
+        <div class="d-flex justify-content-center py-2">
+            <partial name="PagedListPagerPartial" model="Model as IPagedList" />
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Ad Soyad</th>
+                    <th>E-Posta</th>
+                    <th>Cinsiyet</th>
+                    <th>Doğum T.</th>
+                    <th>Sipariş</th>
+                    <th>Rol</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>
+                            @user.Name
+                        </td>
+                        <td>
+                            <a href="mailto:@user.UserName">@user.UserName</a>
+                        </td>
+                        <td>
+                            @if (user.Gender == Genders.Male)
+                            {
+                                <span>Bay</span>
+                            }
+                            else
+                            {
+                                <span>Bayan</span>
+                            }
+                        </td>
+                        <td>
+                            @user.DateOfBirth?.ToShortDateString()
+                        </td>
+                        <td>
+                            @user.Orders.Count().ToString() - @user.Orders.Sum(p => p.GrandTotal).ToString("c2")
+                        </td>
+                        <td>
+                            <select class="custom-select role-menu" data-id="@user.Id">
+                                @foreach (var role in @ViewData["Roles"] as SelectList)
+                                {
+                                    var result = userManager.IsInRoleAsync(user, role.Value).Result;
+                                    if (result)
+                                    {
+                                        <option selected value="@role.Value">@role.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@role.Value">@role.Text</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-center py-2">
+            <partial name="PagedListPagerPartial" model="Model as IPagedList" />
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        $(() => {
+            $('.role-menu').on('change', (e) => {
+
+                var newRole = $(e.currentTarget).val();
+                var id = $(e.currentTarget).attr('data-id');
+
+                swal.fire({
+                    icon: 'warning',
+                    title: 'Rol Değişikliği',
+                    html: 'Kullanıcı rolü değişecek, emin misiniz?',
+                    showCancelButton: true,
+                    cancelButtonText: 'İPTAL',
+                    confirmButtonText: 'TAMAM'
+                })
+                    .then((value) => {
+                        if (value) {
+
+                            window.location = '@Url.Action("ChangeRole","Users")/'+id+'/?newRole=' + newRole;
+                        }
+                    });
+            });
+        });
+    </script>
+}

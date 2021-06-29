@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@await Component.InvokeAsync("Banners")
+
+<div class="h4 border-bottom p-2  mb-2 bg-dark text-white">Önerilen Ürünler</div>
+<partial name="ProductList" model="@ViewBag.FeaturedProducts" />
+
+<div class="h4 border-bottom p-2 mb-2 bg-dark text-white">Çok Satanlar</div>
+<partial name="ProductList" model="@ViewBag.TopSellers" />
+

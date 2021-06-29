@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Order>
+
+@{
+    ViewData["Title"] = "Siparişlerim";
+}
+
+@foreach (var order in Model)
+{
+    <div class="mb-2 p-2 bg-light">
+        <table class="table bg-white">
+            <thead>
+                <tr>
+                    <th><i class="fa fa-bars"></i></th>
+                    <th>Sip. No.</th>
+                    <td>Sip. T.</td>
+                    <td>Durum</td>
+                    <td>Tutar</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <button class="btn btn-sm btn-light" data-toggle="collapse" data-target="#detail_@order.Id">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </td>
+                    <td>@order.Id.ToString("00000000")</td>
+                    <td>@order.Date.ToShortDateString()</td>
+                    <td>@order.OrderState</td>
+                    <td>@order.GrandTotal.ToString("c2")</td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="detail_@order.Id" class="collapse fade hide pl-5">
+            <partial name="OrderDetailsPartial" model="@order.OrderItems" />
+        </div>
+    </div>
+}

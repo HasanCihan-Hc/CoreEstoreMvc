@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Banner>
+@{ 
+    var name = "Tanıtım Görseli";
+    ViewData["Title"] = $"{ name} Yönetimi";
+}
+
+<div class="card card-outline card-primary">
+    <div class="card-header">
+        <h3 class="card-title">@name Listesi</h3>
+        <div class="card-tools">
+
+            <a asp-action="Create" class="btn btn-tool">
+                <i class="fas fa-plus"></i> Yeni @name
+            </a>
+
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <form asp-action="SortOrders" method="post">
+            <div class="d-flex justify-content-center py-2">
+                <partial name="PagedListPagerPartial" model="Model as IPagedList" />
+            </div>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th style="width: 10%">  @Html.DisplayNameFor(p => p.SortOrder)</th>
+                        <th style="width: 40%">  @Html.DisplayNameFor(p => p.Image) </th>
+                        <th style="width: 10%">  @Html.DisplayNameFor(p => p.DateStart)</th>
+                        <th style="width: 10%">  @Html.DisplayNameFor(p => p.DateEnd)</th>
+                        <th style="width: 10%">  @Html.DisplayNameFor(p => p.Date)</th>
+                        <th style="width: 10%">  @Html.DisplayNameFor(p => p.Enabled)</th>
+                        <th style="width: 10%"> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <input type="number" value="@item.SortOrder" class="form-control" name="SortOrder_@item.Id" />
+                            </td>
+                            <td>
+                                <img src=" @item.Image" width="240" height="80" />
+                            </td>
+                            <td>@item.DateStart?.ToShortDateString() </td>
+                            <td>@item.DateEnd?.ToShortDateString()</td> @*.ToShortDateString*@
+                            <td>@item.Date.ToShortDateString() </td>
+
+                            <td>
+                                @if (item.Enabled)
+                                {
+                                    <i class="fa fa-check text-success"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-times text-danger"></i>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-link">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-link remove-btn">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>
+                            <button class="btn btn-sm btn-primary">Güncelle</button>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="d-flex justify-content-center py-2">
+                <partial name="PagedListPagerPartial" model="Model as IPagedList" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <partial name="_RemoveConfirmation" />
+ }

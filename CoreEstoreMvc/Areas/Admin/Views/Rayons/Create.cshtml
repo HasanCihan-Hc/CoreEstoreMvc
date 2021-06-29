@@ -1,0 +1,53 @@
+﻿@model Rayon
+@{ 
+    var name = "Reyon";
+    ViewData["Title"] = $"{ name} Ekleme";
+}
+<div class="card card-outline card-success">
+    <div class="card-header">
+        <h3 class="card-title">@name Ekleme Formu</h3>
+
+        <div class="card-tools">         
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" type="text" class="form-control" placeholder="@name adını yazınız..." />
+                        <span asp-validation-for="Name"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="customCheckEnabled" asp-for="Enabled" />
+                            <label class="custom-control-label" for="customCheckEnabled"> Aktif </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <a class="btn btn-link" asp-action="Index">İptal</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Kaydet
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form> 
+    </div>
+</div>
+
+@section Scripts{ 
+    <partial name="_ValidationScriptsPartial" />
+}

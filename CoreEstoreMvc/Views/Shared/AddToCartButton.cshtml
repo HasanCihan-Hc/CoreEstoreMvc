@@ -1,0 +1,26 @@
+﻿@model AddToCartViewModel
+<form asp-action="AddToCart" method="get">
+    <input type="hidden" asp-for="ProductId" />
+    <div class="form-inline">
+        <div class="form-group mr-2">
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <button class="btn btn-outline-secondary quantityDecrease" type="button">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+                <input type="text" class="form-control form-control-sm border-secondary text-center" asp-for="Quantity" style="width: 30px" />
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary quantityIncrease" type="button">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <button type="submit" class="btn btn-sm btn-success">
+            <i class="fa fa-shopping-cart"></i>
+            Sepete Ekle
+        </button>
+    </div>
+</form>

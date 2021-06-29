@@ -1,0 +1,22 @@
+﻿<script>
+            $(() => {
+                $('.remove-btn').click(function () {
+                    var url = $(this).attr('href');
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'UYARI',
+                        text: 'Bu kaydı silmek istiyor musunuz?',
+                        showCancelButton: true,
+                        cancelButtonText: 'İPTAL',
+                        confirmButtonText: 'SİL',
+                    })
+                        .then((result) => {
+                            if (result.value) {
+                                window.location = url;
+
+                            }
+                        });
+                    return false;
+                });
+            });
+</script>

@@ -1,0 +1,98 @@
+﻿@model Brand
+@{
+    var name = "Marka";
+    ViewData["Title"] = $"{ name} Güncelleme";
+}
+<div class="card card-outline card-warning">
+    <div class="card-header">
+        <h3 class="card-title">@name Güncelleme Formu</h3>
+
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Date" />
+            <input type="hidden" asp-for="Logo" />
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" type="text" class="form-control" placeholder="@name adını yazınız..." />
+                        <span asp-validation-for="Name"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="Logo"></label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="customFile" asp-for="LogoFile" />
+                            <label class="custom-file-label" for="customFile" data-browse="Gözat"> Dosya seçiniz...</label>
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <ul class="list-unstyled">
+                            <li>En iyi görünüm için yüklenen görseller 160x160 piksel olmalıdır.</li>
+                            <li>Yüklenen görseller otomatik olarak 160x160 piksele getirilecektir.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-6 text-center">
+                    <img id="imgPreview" src="@Model.Logo" width="160" height="160" class="border p-2 shadow-sm" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="customCheckEnabled" asp-for="Enabled" />
+                            <label class="custom-control-label" for="customCheckEnabled"> Aktif </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="SortOrder"></label>
+                        <input asp-for="SortOrder" type="text" class="form-control" />
+                        <span asp-validation-for="SortOrder"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <a class="btn btn-link" asp-action="Index">İptal</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Kaydet
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(() => {
+            $('#customFile').change(function () {
+                var reader = new FileReader();
+                reader.onloadend = function (ev) {
+                    $('#imgPreview').attr('src', reader.result);
+                };
+                reader.readAsDataURL(this.files[0]);
+            });
+
+        })
+    </script>
+
+}

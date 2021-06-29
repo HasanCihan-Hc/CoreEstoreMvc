@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Brand>
+
+<div class="d-flex">
+
+    @foreach (var brand in Model)
+    {
+
+        <div>
+            <a asp-action="Brand" asp-controller="Home" asp-route-id="@brand.Id"><img src="@brand.Logo" height="120" alt="@brand.Name" /></a>
+        </div>
+
+
+    }
+</div>

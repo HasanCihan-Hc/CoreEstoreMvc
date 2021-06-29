@@ -1,0 +1,8 @@
+﻿@model float
+@for (int i = 1; i <= 5; i++)
+{
+    var icon = "fa-star";
+    if (Model > i - 1 && Model < i)
+        icon = "fa-star-half-alt";
+    <i class="@(Math.Ceiling(Model) >= i ? "fas" : "far") @icon comment-star text-warning" data-score="@i"></i>
+}

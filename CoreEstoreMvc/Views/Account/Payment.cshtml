@@ -1,0 +1,99 @@
+﻿@model PaymentBase.PaymentParameters
+@{
+    ViewData["Title"] = "Ödeme";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h4>
+            @ViewData["grandTotal"] tutarındaki ödemeniz için aşağıdaki formu kullanınız.
+        </h4>
+
+        @if (!ViewContext.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                @Html.ValidationSummary()
+            </div>
+        }
+
+        <form method="post" autocomplete="off">
+            <div class="form-row">
+                <div class="col-12 col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CardNumber"></label>
+                        <input class="form-control" asp-for="CardNumber" placeholder="@Html.DisplayNameFor(m=>m.CardNumber)" autocomplete="off" />
+                        <span asp-validation-for="CardNumber"></span>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div>Banka : <span class="text-info" id="bankName"></span></div>
+                    <div>
+                        <img id="schemeName" src="" class="hide fade" height="80" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="col-12 col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CardHolderName"></label>
+                        <input class="form-control" asp-for="CardHolderName" placeholder="@Html.DisplayNameFor(m=>m.CardHolderName)" autocomplete="off" />
+                        <span asp-validation-for="CardHolderName"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-12 col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ExpireMonth"></label>
+                        <div class="form-inline">
+                            <select asp-for="ExpireMonth" asp-items="@ViewData["months"] as SelectList" class="custom-select">
+                                <option value="" selected></option>
+                            </select>
+                            <select asp-for="ExpireYear" asp-items="@ViewData["years"] as SelectList" class="custom-select">
+                                <option value="" selected></option>
+                            </select>
+                        </div>
+                        <span asp-validation-for="ExpireMonth"></span>
+                        <span asp-validation-for="ExpireYear"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-12 col-md-6">
+                    <div class="form-group">
+                        <label asp-for="SecurityCode"></label>
+                        <input class="form-control" asp-for="SecurityCode" placeholder="@Html.DisplayNameFor(m=>m.SecurityCode)" autocomplete="off" />
+                        <span asp-validation-for="SecurityCode"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-credit-card"></i>
+                    Öde
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(() => {
+            $('#CardNumber').on('keyup', (e) => {
+                var value = $(e.currentTarget).val();
+                if (value.length == 6) {
+                    $.getJSON(`/account/bincheck/?binNumber=${value}`)
+                        .then((response) => {
+                            $('#bankName').text(response.bank.name);
+                            $('#schemeName').attr('src', '/content/images/' + response.scheme + '.jpg').removeClass('hide').addClass('show');
+                        });
+                }
+            });
+        });
+    </script>
+
+}

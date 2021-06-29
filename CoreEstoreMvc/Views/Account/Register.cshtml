@@ -1,0 +1,78 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Yeni Üyelik";
+}
+
+@if (!ViewContext.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @Html.ValidationSummary()
+    </div>
+}
+
+<form asp-action="Register" asp-controller="Account" method="post" autocomplete="off">
+    <div class="form-row">
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label asp-for="UserName"></label>
+                <input class="form-control" asp-for="UserName" placeholder="e-posta adresinizi yazınız..." autocomplete="off" />
+                <span asp-validation-for="UserName"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input class="form-control" asp-for="Name" placeholder="adınızı yazınız..." autocomplete="off" />
+                <span asp-validation-for="Name"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input class="form-control" asp-for="Password" placeholder="parolanızı yazınız..." autocomplete="off" />
+                <span asp-validation-for="Password"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label asp-for="PasswordVerify"></label>
+                <input class="form-control" asp-for="PasswordVerify" placeholder="parolanızı tekrar yazınız..." autocomplete="off" />
+                <span asp-validation-for="PasswordVerify"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label asp-for="DateOfBirth"></label>
+                <input class="form-control" asp-for="DateOfBirth" placeholder="doğum tarihinizi seçiniz..." autocomplete="off" />
+                <span asp-validation-for="DateOfBirth"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label asp-for="Gender"></label>
+                <select asp-for="Gender" asp-items="@Html.GetEnumSelectList<Genders>()" class="custom-select"></select>
+                <span asp-validation-for="Gender"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <button type="submit" class="btn btn-primary">
+            <i class="fa fa-user-plus"></i>
+            Kaydol
+        </button>
+    </div>
+</form>
+
+@section scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

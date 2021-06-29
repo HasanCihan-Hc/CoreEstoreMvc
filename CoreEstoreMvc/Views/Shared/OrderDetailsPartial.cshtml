@@ -1,0 +1,37 @@
+﻿@model IEnumerable<OrderItem>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th style="width: 10%">Görsel</th>
+            <th>Ürün Adı</th>
+            <th>Miktar</th>
+            <th>Fiyat</th>
+            <th>Tutar</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var orderItem in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@orderItem.Product.Picture" class="img-thumbnail" />
+                </td>
+                <td>
+                    @orderItem.Product.Name
+                    <div class="small">@orderItem.Product.Code</div>
+                </td>
+                <td>
+                    @orderItem.Quantity.ToString("n0")
+                </td>
+                <td>
+                    @orderItem.DiscountedPrice.ToString("c2")
+                    <div class="small" style="text-decoration: line-through">@orderItem.Product.Price.ToString("c2")</div>
+                </td>
+                <td>
+                    @orderItem.Amount.ToString("c2")
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

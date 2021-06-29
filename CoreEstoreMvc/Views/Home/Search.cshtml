@@ -1,0 +1,21 @@
+﻿@model IEnumerable<Product>
+
+
+@{
+    ViewData["Title"] = "Arama Sonuçları";
+}
+
+@await Component.InvokeAsync("Banners")
+
+<div class="mb-2">
+    <div class="h4">Aranan Kelime : @ViewBag.Keywords</div>
+    <div>Bulunan Sonuç : @ViewBag.Results.ToString("N0") adet</div>
+</div>
+
+<partial name="ProductList" model="Model" />
+
+@if (ViewBag.Results == 0)
+{
+    <p class="text-center p-1 text-secondary"><i class="fa fa-5x fa-sad-cry"></i></p>
+    <p class="text-center p-5">arama kriterlerinize uygun sonuç bulunamamıştır</p>
+}

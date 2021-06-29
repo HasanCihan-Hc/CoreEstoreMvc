@@ -1,0 +1,50 @@
+﻿﻿
+.validation-summary-errors ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.field-validation-error {
+    position: relative;
+    top: -14px;
+    left: 13px;
+    background-color: #fff;
+    padding: 2px 8px 2px 8px;
+    color: #f80000;
+    font-size: .8rem;
+}
+
+.shopping-cart-badge {
+    position: relative;
+    left: -10px;
+    top: -7px !important;
+    border: 2px solid #fff;
+}
+
+.product-name {
+    height: 50px;
+    overflow: hidden;
+}
+
+.thumbnail-image {
+    cursor: pointer;
+}
+
+.product-image {
+    opacity: 0;
+    transition: .3s all linear;
+}
+
+.product-image.active {
+        opacity: 1;
+    }
+
+.comment-star {
+    cursor: pointer;
+}
+
+.comment-blockquote {
+    border-left: 6px solid #ccc;
+    font-size: 1rem;
+}
