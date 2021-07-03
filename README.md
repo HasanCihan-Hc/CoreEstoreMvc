@@ -28,7 +28,7 @@
   - C#, Oop
   - HTML
   - Javascript / JQuery
-  - SASS / Scss
+  - Css
   - Entity Framework Core, CodeFirst
 
   ### Eklentiler:
