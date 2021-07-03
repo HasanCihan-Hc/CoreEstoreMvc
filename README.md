@@ -15,7 +15,7 @@
 
   Site ön yüzü, bir ürün sepeti yapısı da barındırır.
 
-  Proje plug-in yapısı ile çoklu sanal pos desteği ile birlikte geliştirilmiştir.
+  Proje plugin yapısı ile çoklu sanal pos desteği ile birlikte geliştirilmiştir.
 
   Uygulama: Microsoft .Net MVC Core Web Application
 
